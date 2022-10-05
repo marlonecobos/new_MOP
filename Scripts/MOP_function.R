@@ -80,35 +80,25 @@
 #'     center = FALSE, percent = 5, comp_each = 2000, fix_NA = FALSE, 
 #'     parallel = FALSE, n_cores = NULL)
 
-if (!require(raster)) {
-  install.packages("raster")
-  Sys.sleep(1)
-  library(raster)
-}
-
-if (!require(foreach)) {
-  install.packages("foreach")
-  Sys.sleep(1)
-  library(foreach)
-}
-
-if (!require(Kendall)) {
-  install.packages("Kendall")
-  Sys.sleep(1)
-  library(Kendall)
-}
-
-if (!require(snow)) {
-  install.packages("snow")
-  Sys.sleep(1)
-  library(snow)
-}
-
-if (!require(doSNOW)) {
-  install.packages("doSNOW")
-  Sys.sleep(1)
-  library(doSNOW)
-}
+#if (!require(raster)) {
+#  install.packages("raster")
+#}
+#
+#if (!require(foreach)) {
+#  install.packages("foreach")
+#}
+#
+#if (!require(Kendall)) {
+#  install.packages("Kendall")
+#}
+#
+#if (!require(snow)) {
+#  install.packages("snow")
+#}
+#
+#if (!require(doSNOW)) {
+#  install.packages("doSNOW")
+#}
 
 mop <- function(m, g, mop_type = "basic", distance = "euclidean", 
                 scale = FALSE, center = FALSE, percent = 5, 
@@ -131,21 +121,6 @@ mop <- function(m, g, mop_type = "basic", distance = "euclidean",
   }
   
   mop_type <- mop_type[1]
-  
-  # helper function to create table for mop_complete interpretation
-  ext_interpret <- function (var_names, var_codes) {
-    var_comb <- lapply(1:length(var_names), function(x) {
-      apply(combn(var_names, m = x), 2, paste, collapse = ", ")
-    })
-    var_comb <- unlist(var_comb)
-    
-    var_cod <- lapply(1:length(var_codes), function(x) {
-      apply(combn(var_codes, m = x), 2, sum)
-    })
-    var_cod <- unlist(var_cod)
-    
-    return(data.frame(values = var_cod, extrapolation_variables = var_comb))
-  }
   
   # processing
   ## layer for mop results
@@ -402,10 +377,23 @@ mop <- function(m, g, mop_type = "basic", distance = "euclidean",
 }
 
 
+# helper function to create table for mop_complete interpretation
+ext_interpret <- function (var_names, var_codes) {
+  var_comb <- lapply(1:length(var_names), function(x) {
+    apply(combn(var_names, m = x), 2, paste, collapse = ", ")
+  })
+  var_comb <- unlist(var_comb)
+  
+  var_cod <- lapply(1:length(var_codes), function(x) {
+    apply(combn(var_codes, m = x), 2, sum)
+  })
+  var_cod <- unlist(var_cod)
+  
+  return(data.frame(values = var_cod, extrapolation_variables = var_comb))
+}
 
 
 # helper to get information to plot raster files and their legends properly
-
 plot_raster_inf <- function(mop_result, result = "basic", 
                             col_nonanalogous = "#000000",
                             color_palette = heat.colors, reverse = FALSE) {
