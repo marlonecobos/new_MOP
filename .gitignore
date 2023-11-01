@@ -4,6 +4,8 @@
 .Ruserdata
 Data/wc2.1_10m
 Data/gadm
+Data/USA.gpkg
+Data/USA48.gpkg
 Figures
 Results
 new_MOP.Rproj
