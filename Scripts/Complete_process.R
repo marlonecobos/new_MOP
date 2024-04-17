@@ -434,6 +434,7 @@ par(mar = rep(0, 4))
 plot(mop_mex$mop_simple, col = gray.colors(6)[2:5], mar = NA, axes = FALSE) 
 plot(wld, add = TRUE, border = alpha("gray65", 0.6), lwd = lwdn)
 plot(mx, add = TRUE, lwd = lwdh)
+plot(au_area, add = TRUE, border = "gray35", lwd = lwdh)
 dev.off()
 
 png("Figures/Figure2f.png", width = 50, height = 70, units = "mm", res = 300)
@@ -484,7 +485,7 @@ rec <- lapply(block_coor, function(x) {
 })
 text(regions[, 1], regions[, 2], labels = 1:nrow(regions), cex = 0.8)
 legend("topleft", cex = 1, bty = "n", 
-       legend = c("Calibration area (USA)", "Transfer area (Americas)"),
+       legend = c("Reference conditions (USA)", "Conditions of interest (Americas)"),
        fill = c(colpro, colcal))
 legend(x = -50, y = 430, cex = 0.8, bty = "n", 
        legend = c("1 Inside cloud & ranges (high density)", 
@@ -503,8 +504,8 @@ plot(mexv[, var_den], pch = 16, col = alpha(colcal, 0.7),
      xlab = "", ylab = "",
      xlim = lims[, 1], ylim = lims[, 2])
 points(au_varv[, var_den], pch = 16, col = alpha(colpro, 0.5))
-legend("topleft", legend = c("Accessible area", 
-                             "Transfer area (Mexico)"),
+legend("topleft", legend = c("Reference conditions", 
+                             "Conditions of interest (Mexico)"),
        fill = c(colpro, colcal), cex = 1, bty = "n")
 
 ## USA vs Americas (density of points)
@@ -515,13 +516,13 @@ rec <- lapply(block_coor, function(x) {
   rect(x[1], x[2], x[3], x[4], border = colsel)
 })
 legend_bar(position = "topleft", col = colcalden, title = "Density", cex = 1.1)
-legend("topright", cex = 1, bty = "n", legend = "USA  ")
+legend("topright", cex = 1, bty = "n", legend = "Reference conditions  ")
 
 ## Ecuador current vs future (density of points)
 plot(lims, type = "n", xlab = "", ylab = "")
 image(au_vark$eval.points[[1]], au_vark$eval.points[[2]], z = au_vark$estimate, 
       col = colcalden1, add = TRUE)
-legend("topleft", cex = 1, bty = "n", legend = "Accessible area")
+legend("topleft", cex = 1, bty = "n", legend = "Reference conditions")
 
 ## USA vs Americas (density of points)
 plot(limsame, type = "n", xlab = "Minimum temperature", 
@@ -533,173 +534,19 @@ rec <- lapply(block_coor, function(x) {
 })
 legend_bar(position = "topleft", col = colproden, title = "Density", 
            cex = 1.1)
-legend("topright", cex = 1, bty = "n", legend = "Americas  ")
+legend("topright", cex = 1, bty = "n", legend = "Conditions of interest  ")
 
 ## Ecuador current vs future (density of points)
 plot(lims, type = "n", xlab = "Minimum temperature", ylab = "")
 image(mexk$eval.points[[1]], mexk$eval.points[[2]], z = mexk$estimate, 
       col = colproden1, add = TRUE)
-legend("topleft", cex = 1, bty = "n", legend = "Mexico")
+legend("topleft", cex = 1, bty = "n", legend = "Conditions of interest")
 
 dev.off()
 # ------------------------------------------------------------------------------
 
 
 # Figure 4 ---------------------------------------------------------------------
-# margins
-martext <- rep(0, 4)
-marplot <- c(0.7, 4.5, 0.1, 0.1)
-marplot1 <- c(4.2, 4.5, 0.1, 0.1)
-marplot2 <- c(0.7, 0.7, 0.1, 0.1)
-marplot3 <- c(4.2, 0.7, 0.1, 0.1)
-
-# colors
-ceuc <- raster_shared_colors(c(mop_ame_eucl10$mop_distance, 
-                               mop_ame_eucl5$mop_distance, 
-                               mop_ame_eucl1$mop_distance,
-                               mop_ame_eu_s10$mop_distance, 
-                               mop_ame_eu_s5$mop_distance, 
-                               mop_ame_eu_s1$mop_distance,
-                               mop_ame_maha10$mop_distance, 
-                               mop_ame_maha5$mop_distance, 
-                               mop_ame_maha1$mop_distance), 
-                             color_palette = daright, raster_plot = FALSE)
-
-colsel <- "#F90616"
-
-# size proportions
-cext <- 0.95
-cexe <- 0.8
-cexl <- 0.7
-cexb <- 1.2
-ptcex <- 0.5
-
-# figure 4
-png("Figures/Figure4.png", res = 600, width = 166, height = 140, units = "mm")
-
-mlay <- matrix(1:16, nrow = 4)
-layout(mlay, widths = c(1, 10, 8, 8), heights = c(1, 8, 8, 10))
-par(cex = 0.55)
-
-par(mar = martext)
-plot.new()
-plot.new(); text(0.5, 0.55, "10% reference", cex = 1.2, srt = 90)
-plot.new(); text(0.5, 0.55, "5% reference", cex = 1.2, srt = 90)
-plot.new(); text(0.5, 0.6, "1% reference", cex = 1.2, srt = 90)
-
-plot.new(); text(0.6, 0.5, "Euclidean (raw variables)", cex = 1.2)
-
-par(mar = marplot)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[1]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[2]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
-
-par(mar = marplot1)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[3]], 
-              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = TRUE)
-legend_bar(position = "topleft", col = rev(daright(255)), heigh_prop = 0.3,
-           width_prop = 0.05, title = "Dissimilarity", cex = 1.2)
-
-
-par(mar = martext)
-plot.new(); text(0.5, 0.5, "Euclidean (scaled variables)", cex = 1.2)
-
-par(mar = marplot2)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[4]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[5]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
-
-par(mar = marplot3)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[6]], 
-              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = FALSE)
-
-par(mar = martext)
-plot.new(); text(0.5, 0.5, "Mahalanobis (raw variables)", cex = 1.2)
-
-par(mar = marplot2)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[7]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[8]], 
-              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
-
-par(mar = marplot3)
-block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[9]], 
-              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = FALSE)
-
-dev.off()
-# ------------------------------------------------------------------------------
-
-
-# Figure 5 ---------------------------------------------------------------------
-# margins and colors
-martext <- rep(0, 4)
-marplot <- c(0.7, 4.5, 0.1, 0.1)
-marplot1 <- c(4.2, 4.5, 0.1, 0.1)
-marplot2 <- c(0.7, 0.7, 0.1, 0.1)
-marplot3 <- c(4.2, 0.7, 0.1, 0.1)
-
-ylims <- apply(do.call(rbind, b_mop_values), 2, range)
-
-colbox <- "gray75"
-
-# figure 5
-png("Figures/Figure5.png", res = 600, width = 166, height = 140, units = "mm")
-
-mlay <- matrix(1:16, nrow = 4)
-layout(mlay, widths = c(1, 10, 8, 8), heights = c(1, 8, 8, 10))
-par(cex = 0.55)
-
-par(mar = martext)
-plot.new()
-plot.new(); text(0.5, 0.55, "10% reference", cex = 1.2, srt = 90)
-plot.new(); text(0.5, 0.55, "5% reference", cex = 1.2, srt = 90)
-plot.new(); text(0.5, 0.6, "1% reference", cex = 1.2, srt = 90)
-
-plot.new(); text(0.6, 0.5, "Euclidean (raw variables)", cex = 1.2)
-
-par(mar = marplot)
-block_bxplot(b_mop_values, column = 1, axis1 = FALSE, axis2 = TRUE, 
-             ylim = ylims[, 1])
-block_bxplot(b_mop_values, column = 2, axis1 = FALSE, axis2 = TRUE, 
-             ylim = ylims[, 1])
-
-par(mar = marplot1)
-block_bxplot(b_mop_values, column = 3, axis1 = TRUE, axis2 = TRUE, 
-             ylim = ylims[, 1])
-
-par(mar = martext)
-plot.new(); text(0.5, 0.5, "Euclidean (scaled variables)", cex = 1.2)
-
-par(mar = marplot2)
-block_bxplot(b_mop_values, column = 4, axis1 = FALSE, axis2 = FALSE, 
-             ylim = ylims[, 4])
-block_bxplot(b_mop_values, column = 5, axis1 = FALSE, axis2 = FALSE, 
-             ylim = ylims[, 4])
-
-par(mar = marplot3)
-block_bxplot(b_mop_values, column = 6, axis1 = TRUE, axis2 = FALSE, 
-             ylim = ylims[, 4])
-
-par(mar = martext)
-plot.new(); text(0.5, 0.5, "Mahalanobis (raw variables)", cex = 1.2)
-
-par(mar = marplot2)
-block_bxplot(b_mop_values, column = 7, axis1 = FALSE, axis2 = FALSE, 
-             ylim = ylims[, 7])
-block_bxplot(b_mop_values, column = 8, axis1 = FALSE, axis2 = FALSE, 
-             ylim = ylims[, 7])
-
-par(mar = marplot3)
-block_bxplot(b_mop_values, column = 9, axis1 = TRUE, axis2 = FALSE, 
-             ylim = ylims[, 7])
-
-dev.off()
-# ------------------------------------------------------------------------------
-
-
-# Figure 6 ---------------------------------------------------------------------
 # colors and legends
 vame <- as.numeric(unlist(unique(mop_ame$mop_simple)))
 vmex <- as.numeric(unlist(unique(mop_mex$mop_simple)))
@@ -727,7 +574,7 @@ marplot <- c(0.1, 0.1, 0.1, 0.1)
 martext <- rep(0, 4)
 
 # the figure
-png("Figures/Figure6.png", res = 600, width = 120, height = 185, units = "mm")
+png("Figures/Figure4.png", res = 600, width = 120, height = 185, units = "mm")
 mat <- matrix(1:12, nrow = 4)
 layout(mat, widths = c(1, rep(10, 3)), heights = c(1, rep(10, 3)))
 
@@ -799,6 +646,161 @@ plot(au_area, add = TRUE)
 box()
 legend("bottomleft", legend = lhighau, 
        fill = chighau, cex = 0.7, bty = "n")
+
+dev.off()
+# ------------------------------------------------------------------------------
+
+
+# Figure 5 ---------------------------------------------------------------------
+# margins
+martext <- rep(0, 4)
+marplot <- c(0.7, 4.5, 0.1, 0.1)
+marplot1 <- c(4.2, 4.5, 0.1, 0.1)
+marplot2 <- c(0.7, 0.7, 0.1, 0.1)
+marplot3 <- c(4.2, 0.7, 0.1, 0.1)
+
+# colors
+ceuc <- raster_shared_colors(c(mop_ame_eucl10$mop_distance, 
+                               mop_ame_eucl5$mop_distance, 
+                               mop_ame_eucl1$mop_distance,
+                               mop_ame_eu_s10$mop_distance, 
+                               mop_ame_eu_s5$mop_distance, 
+                               mop_ame_eu_s1$mop_distance,
+                               mop_ame_maha10$mop_distance, 
+                               mop_ame_maha5$mop_distance, 
+                               mop_ame_maha1$mop_distance), 
+                             color_palette = daright, raster_plot = FALSE)
+
+colsel <- "#F90616"
+
+# size proportions
+cext <- 0.95
+cexe <- 0.8
+cexl <- 0.7
+cexb <- 1.2
+ptcex <- 0.5
+
+# figure 4
+png("Figures/Figure5.png", res = 600, width = 166, height = 140, units = "mm")
+
+mlay <- matrix(1:16, nrow = 4)
+layout(mlay, widths = c(1, 10, 8, 8), heights = c(1, 8, 8, 10))
+par(cex = 0.55)
+
+par(mar = martext)
+plot.new()
+plot.new(); text(0.5, 0.55, "10% reference", cex = 1.2, srt = 90)
+plot.new(); text(0.5, 0.55, "5% reference", cex = 1.2, srt = 90)
+plot.new(); text(0.5, 0.6, "1% reference", cex = 1.2, srt = 90)
+
+plot.new(); text(0.6, 0.5, "Euclidean (raw variables)", cex = 1.2)
+
+par(mar = marplot)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[1]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
+legend_bar(position = "topleft", col = rev(daright(255)), heigh_prop = 0.3,
+           width_prop = 0.05, title = "Dissimilarity", cex = 1.2)
+
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[2]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
+
+par(mar = marplot1)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[3]], 
+              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = TRUE)
+
+
+par(mar = martext)
+plot.new(); text(0.5, 0.5, "Euclidean (scaled variables)", cex = 1.2)
+
+par(mar = marplot2)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[4]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[5]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
+
+par(mar = marplot3)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[6]], 
+              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = FALSE)
+
+par(mar = martext)
+plot.new(); text(0.5, 0.5, "Mahalanobis (raw variables)", cex = 1.2)
+
+par(mar = marplot2)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[7]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[8]], 
+              ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = FALSE)
+
+par(mar = marplot3)
+block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[9]], 
+              ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = FALSE)
+
+dev.off()
+# ------------------------------------------------------------------------------
+
+
+# Figure 6 ---------------------------------------------------------------------
+# margins and colors
+martext <- rep(0, 4)
+marplot <- c(0.7, 4.5, 0.1, 0.1)
+marplot1 <- c(4.2, 4.5, 0.1, 0.1)
+marplot2 <- c(0.7, 0.7, 0.1, 0.1)
+marplot3 <- c(4.2, 0.7, 0.1, 0.1)
+
+ylims <- apply(do.call(rbind, b_mop_values), 2, range)
+
+colbox <- "gray75"
+
+# figure 5
+png("Figures/Figure6.png", res = 600, width = 166, height = 140, units = "mm")
+
+mlay <- matrix(1:16, nrow = 4)
+layout(mlay, widths = c(1, 10, 8, 8), heights = c(1, 8, 8, 10))
+par(cex = 0.55)
+
+par(mar = martext)
+plot.new()
+plot.new(); text(0.5, 0.55, "10% reference", cex = 1.2, srt = 90)
+plot.new(); text(0.5, 0.55, "5% reference", cex = 1.2, srt = 90)
+plot.new(); text(0.5, 0.6, "1% reference", cex = 1.2, srt = 90)
+
+plot.new(); text(0.6, 0.5, "Euclidean (raw variables)", cex = 1.2)
+
+par(mar = marplot)
+block_bxplot(b_mop_values, column = 1, axis1 = FALSE, axis2 = TRUE, 
+             ylim = ylims[, 1])
+block_bxplot(b_mop_values, column = 2, axis1 = FALSE, axis2 = TRUE, 
+             ylim = ylims[, 1])
+
+par(mar = marplot1)
+block_bxplot(b_mop_values, column = 3, axis1 = TRUE, axis2 = TRUE, 
+             ylim = ylims[, 1])
+
+par(mar = martext)
+plot.new(); text(0.5, 0.5, "Euclidean (scaled variables)", cex = 1.2)
+
+par(mar = marplot2)
+block_bxplot(b_mop_values, column = 4, axis1 = FALSE, axis2 = FALSE, 
+             ylim = ylims[, 4])
+block_bxplot(b_mop_values, column = 5, axis1 = FALSE, axis2 = FALSE, 
+             ylim = ylims[, 4])
+
+par(mar = marplot3)
+block_bxplot(b_mop_values, column = 6, axis1 = TRUE, axis2 = FALSE, 
+             ylim = ylims[, 4])
+
+par(mar = martext)
+plot.new(); text(0.5, 0.5, "Mahalanobis (raw variables)", cex = 1.2)
+
+par(mar = marplot2)
+block_bxplot(b_mop_values, column = 7, axis1 = FALSE, axis2 = FALSE, 
+             ylim = ylims[, 7])
+block_bxplot(b_mop_values, column = 8, axis1 = FALSE, axis2 = FALSE, 
+             ylim = ylims[, 7])
+
+par(mar = marplot3)
+block_bxplot(b_mop_values, column = 9, axis1 = TRUE, axis2 = FALSE, 
+             ylim = ylims[, 7])
 
 dev.off()
 # ------------------------------------------------------------------------------
@@ -902,7 +904,90 @@ dev.off()
 # ------------------------------------------------------------------------------
 
 
-# Figure S1 ---------------------------------------------------------------------
+
+# Figure S1 --------------------------------------------------------------------
+# margins
+martext <- rep(0, 4)
+marplot <- c(0.1, 0.1, 0.1, 0.1)
+
+# variables involved
+varsn <- names(americas)
+varsn1 <- gsub("_", "", varsn)
+
+# color
+col0 <- "#740211"
+
+png("Figures/FigureS1.png", res = 600, width = 166, height = 130, units = "mm")
+mat <- matrix(1:35, nrow = 5, byrow = TRUE)
+layout(mat, widths = c(0.9, rep(10, 6)), heights = c(0.9, rep(10, 4)))
+
+## labes Y
+par(mar = martext)
+par(cex = 0.7)
+plot.new()
+for (i in varsn1) {
+  plot.new(); text(0.5, 0.4, i, cex = 1)
+}
+
+## row1
+plot.new(); text(0.6, 0.5, "Towards low values", cex = 1, srt = 90)
+
+par(mar = marplot, cex = 0.8)
+for (i in varsn) {
+  plot(mop_ame$mop_detailed$towards_low_end[[i]], col = col0, axes = F, 
+       legend = F, mar = NA)
+  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
+  
+  if (i == varsn[1]) {
+    legend("bottomleft", legend = "Non-analogous", fill = col0, cex = 0.7, 
+           bg = "white", box.col = NA)
+  }
+  box()
+}
+
+## row2
+par(mar = martext, cex = 0.7)
+plot.new(); text(0.6, 0.5, "Towards high values", cex = 1, srt = 90)
+
+par(mar = marplot, cex = 0.8)
+for (i in varsn) {
+  plot(mop_ame$mop_detailed$towards_high_end[[i]], col = col0, axes = F,
+       legend = F, mar = NA)
+  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
+  box()
+}
+
+## row3
+par(mar = martext, cex = 0.7)
+plot.new(); text(0.6, 0.5, "Towards low values", cex = 1, srt = 90)
+
+par(mar = marplot, cex = 0.8)
+for (i in varsn) {
+  plot(mop_mex$mop_detailed$towards_low_end[[i]], col = col0, axes = F, 
+       legend = F, mar = NA)
+  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
+  plot(au_area, add = TRUE)
+  box()
+}
+
+## row4
+par(mar = martext, cex = 0.7)
+plot.new(); text(0.6, 0.5, "Towards high values", cex = 1, srt = 90)
+
+par(mar = marplot, cex = 0.8)
+for (i in varsn) {
+  plot(mop_mex$mop_detailed$towards_high_end[[i]], col = col0, 
+       axes = F, legend = F, mar = NA)
+  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
+  plot(au_area, add = TRUE)
+  box()
+}
+
+dev.off()
+# ------------------------------------------------------------------------------
+
+
+# Figure S2 ---------------------------------------------------------------------
 # margins
 martext <- rep(0, 4)
 marplot <- c(0.7, 4.5, 0.1, 0.1)
@@ -934,7 +1019,7 @@ cexb <- 1.2
 ptcex <- 0.5
 
 # figure 5
-png("Figures/FigureS1.png", res = 600, width = 166, height = 140, units = "mm")
+png("Figures/FigureS2.png", res = 600, width = 166, height = 140, units = "mm")
 
 mlay <- matrix(1:16, nrow = 4)
 layout(mlay, widths = c(1, 10, 8, 8), heights = c(1, 8, 8, 10))
@@ -951,14 +1036,15 @@ plot.new(); text(0.6, 0.5, "Euclidean (raw variables)", cex = 1.2)
 par(mar = marplot)
 block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[1]], 
               ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
+legend_bar(position = "topleft", col = rev(daright(255)), heigh_prop = 0.3,
+           width_prop = 0.05, title = "Dissimilarity", cex = 1.2)
+
 block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[2]], 
               ptcex = ptcex, colsel = colsel, axis1 = FALSE, axis2 = TRUE)
 
 par(mar = marplot1)
 block_scatter(americasv[, var_den], block_coor, ptcol = ceuc[[3]], 
               ptcex = ptcex, colsel = colsel, axis1 = TRUE, axis2 = TRUE)
-legend_bar(position = "topleft", col = rev(daright(255)), heigh_prop = 0.3,
-           width_prop = 0.05, title = "Dissimilarity", cex = 1.2)
 
 par(mar = martext)
 plot.new(); text(0.5, 0.5, "Euclidean (scaled variables)", cex = 1.2)
@@ -990,7 +1076,7 @@ dev.off()
 # ------------------------------------------------------------------------------
 
 
-# Figure S2 ---------------------------------------------------------------------
+# Figure S3 ---------------------------------------------------------------------
 # margins and colors
 martext <- rep(0, 4)
 marplot <- c(0.7, 4.5, 0.1, 0.1)
@@ -1002,7 +1088,7 @@ ylims <- apply(do.call(rbind, b_mop_values_r), 2, range)
 
 colbox <- "gray75"
 
-# figure S2
+# figure S3
 png("Figures/FigureS2.png", res = 600, width = 166, height = 140, units = "mm")
 
 mlay <- matrix(1:16, nrow = 4)
@@ -1052,85 +1138,6 @@ block_bxplot(b_mop_values_r, column = 8, axis1 = FALSE, axis2 = FALSE,
 par(mar = marplot3)
 block_bxplot(b_mop_values_r, column = 9, axis1 = TRUE, axis2 = FALSE, 
              ylim = ylims[, 7])
-
-dev.off()
-# ------------------------------------------------------------------------------
-
-
-# Figure S3 --------------------------------------------------------------------
-# margins
-martext <- rep(0, 4)
-marplot <- c(0.1, 0.1, 0.1, 0.1)
-
-# variables involved
-varsn <- names(americas)
-varsn1 <- gsub("_", "", varsn)
-
-# color
-col0 <- "#740211"
-
-png("Figures/FigureS3.png", res = 600, width = 166, height = 130, units = "mm")
-mat <- matrix(1:35, nrow = 5, byrow = TRUE)
-layout(mat, widths = c(0.9, rep(10, 6)), heights = c(0.9, rep(10, 4)))
-
-## labes Y
-par(mar = martext)
-par(cex = 0.7)
-plot.new()
-for (i in varsn1) {
-  plot.new(); text(0.5, 0.4, i, cex = 1)
-}
-
-## row1
-plot.new(); text(0.6, 0.5, "Towards low values", cex = 1, srt = 90)
-
-par(mar = marplot, cex = 0.8)
-for (i in varsn) {
-  plot(mop_ame$mop_detailed$towards_low_end[[i]], col = col0, axes = F, 
-       legend = F, mar = NA)
-  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
-  box()
-}
-
-## row2
-par(mar = martext, cex = 0.7)
-plot.new(); text(0.6, 0.5, "Towards high values", cex = 1, srt = 90)
-
-par(mar = marplot, cex = 0.8)
-for (i in varsn) {
-  plot(mop_ame$mop_detailed$towards_high_end[[i]], col = col0, axes = F,
-       legend = F, mar = NA)
-  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
-  box()
-}
-
-## row3
-par(mar = martext, cex = 0.7)
-plot.new(); text(0.6, 0.5, "Towards low values", cex = 1, srt = 90)
-
-par(mar = marplot, cex = 0.8)
-for (i in varsn) {
-  plot(mop_mex$mop_detailed$towards_low_end[[i]], col = col0, axes = F, 
-       legend = F, mar = NA)
-  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
-  plot(au_area, add = TRUE)
-  box()
-}
-
-## row4
-par(mar = martext, cex = 0.7)
-plot.new(); text(0.6, 0.5, "Towards high values", cex = 1, srt = 90)
-
-par(mar = marplot, cex = 0.8)
-for (i in varsn) {
-  plot(mop_mex$mop_detailed$towards_high_end[[i]], col = col0, 
-       axes = F, legend = F, mar = NA)
-  plot(wld, border = alpha("gray55", 0.6), add = TRUE)
-  plot(au_area, add = TRUE)
-  box()
-}
-legend("bottomleft", legend = "Non-analogous", fill = col0, bty = "n", 
-       cex = 0.7)
 
 dev.off()
 # ------------------------------------------------------------------------------
