@@ -13,7 +13,10 @@ Contact: manubio13@gmail.com
 
 ### Citation
 
-...
+Cobos, ME, HL Owens, J Soberón, and AT Peterson. 2024. Detailed multivariate 
+comparisons of environments with mobility oriented parity. Frontiers of 
+Biogeography, 17: e132916. https://doi.org/10.21425/fob.17.132916.
+
 
 ### Description
 
